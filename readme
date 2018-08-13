@@ -1,4 +1,21 @@
+Tasks:
+Flume:
 
+Upload linux_messages_3000lines.txt from here
+
+Use the following command to create and gradually grow the input:
+shell
+cat linux_messages_3000lines.txt | while read line ; do echo "$line" ; sleep 0.2 ; done > output.txt
+
+
+Write a Flume configuration to upload the ever growing output.txt file to HDFS.
+Include a screenshot in your report of the output of following command of your output in HDFS:
+shell
+hdfs dfs cat ...
+
+
+
+//add description
 This app is using flume that is listening the source and writes events from the source as files to an hdfs direcrory.
 
 data flow: input file -> source -> channel -> sink -> hdfs
