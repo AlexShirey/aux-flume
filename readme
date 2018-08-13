@@ -15,7 +15,7 @@ hdfs dfs cat ...
 
 
 
-//add description
+//app description
 This app is using flume that is listening the source and writes events from the source as files to an hdfs direcrory.
 
 data flow: input file -> source -> channel -> sink -> hdfs
