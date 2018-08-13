@@ -1,0 +1,50 @@
+
+This app is using flume that is listening the source and writes events from the source as files to an hdfs direcrory.
+
+data flow: input file -> source -> channel -> sink -> hdfs
+
+	
+To run the app:
+
+1. modify (if you wish) hdfs output directory in .conf file (default path is /user/maria_dev/flume)
+
+2. run the app 
+
+	$> bash run.sh input_file source_type,
+
+the app supports two flume's source types - "exec" source and "netcat" source, so you can choose what to use.
+
+3. the app starts the flume, and waits it to init and be ready for listening a source
+
+4. the app begins to to fill the source with lines from input_file using next command:
+
+	cat $INPUT_FILE | while read line ; do echo "$line" ; sleep 0.2 ; done > $SOURCE
+
+5. flume is listening the source, and generates events from the lines (one line - one event), puts them to the channel (memory buffer),
+then to the sink, and finaly writes them as files in hdfs output directory
+
+6. when the app finishes to fill the source from input file (no more lines to add), it means that 
+flume will not generate any event more, and only we must to do is to wait while
+flume writes the last read events to the hdfs (default idleTimeout is 5 sec (no more events during that time), after idleTimeout flume closes tmp file),
+
+7. the app prints the message about finishing filling source, and asks if we want to terminte flume process:
+	-if answer is yes, then the app waits (sleep) for 10 seconds to make flume finish the job, and kill the flume process
+	-if answer is no, then the app will not kill the flume (you have to terminate it manualy)
+
+8. In case "exec" source_type, the app will also delete temporary file that was created for the needs of "exec" source_type
+
+9. The app is finished, and the results in hdfs output directory can be checked, they should be the same as input_file.
+
+
+
+ 
+	
+
+
+
+
+
+
+	
+
+
